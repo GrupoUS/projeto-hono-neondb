@@ -18,6 +18,7 @@
     "@my-better-t-app/env": "workspace:*",
     "@trpc/server": "catalog:",
     "dotenv": "catalog:",
+    "drizzle-orm": "^0.45.1",
     "hono": "catalog:",
     "pino": "^10.2.1",
     "zod": "catalog:"
