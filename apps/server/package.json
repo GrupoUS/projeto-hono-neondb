@@ -10,13 +10,16 @@
     "start": "bun run dist/index.js"
   },
   "dependencies": {
+    "@clerk/backend": "^2.29.4",
     "@hono/trpc-server": "^0.4.0",
+    "@hono/zod-validator": "^0.7.6",
     "@my-better-t-app/api": "workspace:*",
     "@my-better-t-app/db": "workspace:*",
     "@my-better-t-app/env": "workspace:*",
     "@trpc/server": "catalog:",
     "dotenv": "catalog:",
     "hono": "catalog:",
+    "pino": "^10.2.1",
     "zod": "catalog:"
   },
   "devDependencies": {
