@@ -1,74 +1,123 @@
-# my-better-t-app
+# SaaS Boilerplate — Hono + NeonDB + Drizzle
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, TanStack Start, Hono, TRPC, and more.
+Production-ready SaaS boilerplate with TypeScript end-to-end type safety, Clerk authentication, and Railway deployment.
 
 ## Features
 
-- **TypeScript** - For type safety and improved developer experience
-- **TanStack Start** - SSR framework with TanStack Router
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Hono** - Lightweight, performant server framework
+- **Hono** - Edge-first, lightweight API framework
+- **NeonDB** - Serverless PostgreSQL with connection pooling
+- **Drizzle ORM** - Type-safe SQL with migrations
+- **Clerk** - Complete authentication with JWT verification
+- **React 19** - Latest React with concurrent features
+- **TanStack Router** - Type-safe file-based routing
+- **TanStack Query** - Async state management
 - **tRPC** - End-to-end type-safe APIs
-- **Bun** - Runtime environment
-- **Drizzle** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Biome** - Linting and formatting
+- **Tailwind CSS + shadcn/ui** - Modern styling
 - **Turborepo** - Optimized monorepo build system
+- **Railway** - One-click deployment ready
 
-## Getting Started
-
-First, install the dependencies:
+## Quick Start
 
 ```bash
+# Install dependencies
 bun install
-```
 
-## Database Setup
+# Configure environment
+cp .env.example apps/server/.env
+# Edit .env with your Clerk and NeonDB credentials
 
-This project uses PostgreSQL with Drizzle ORM.
-
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Apply the schema to your database:
-
-```bash
+# Push database schema
 bun run db:push
-```
 
-Then, run the development server:
-
-```bash
+# Start development
 bun run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-The API is running at [http://localhost:3000](http://localhost:3000).
-
-## Git Hooks and Formatting
-
-- Format and lint fix: `bun run check`
+- **Web**: http://localhost:5173
+- **API**: http://localhost:3000
+- **Health**: http://localhost:3000/health
 
 ## Project Structure
 
 ```
-my-better-t-app/
 ├── apps/
-│   ├── web/         # Frontend application (React + TanStack Start)
-│   └── server/      # Backend API (Hono, TRPC)
+│   ├── server/         # Hono API + tRPC
+│   │   ├── src/
+│   │   │   ├── routes/      # REST API routes (users)
+│   │   │   ├── middleware/  # Clerk auth middleware
+│   │   │   ├── services/    # Business logic
+│   │   │   └── index.ts     # Entry point
+│   │   └── Dockerfile
+│   └── web/            # React + TanStack
+│       ├── src/
+│       │   ├── routes/      # File-based routing
+│       │   ├── hooks/       # useCurrentUser, useSyncUser
+│       │   └── lib/         # API client with auth
+│       └── package.json
 ├── packages/
-│   ├── api/         # API layer / business logic
-│   └── db/          # Database schema & queries
+│   ├── api/            # tRPC routers
+│   ├── db/             # Drizzle schema + client
+│   ├── env/            # Environment validation
+│   └── shared/         # Shared types + Zod validators
+├── railway.toml        # Railway config
+└── .env.example
 ```
 
-## Available Scripts
+## API Endpoints
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run dev:server`: Start only the server
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run db:push`: Push schema changes to database
-- `bun run db:studio`: Open database studio UI
-- `bun run check`: Run Biome formatting and linting
+### REST API (`/api/v1`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/users/sync` | Sync user from Clerk |
+| GET | `/api/v1/users/me` | Get current user |
+| PATCH | `/api/v1/users/me` | Update current user |
+| DELETE | `/api/v1/users/me` | Delete current user |
+| GET | `/health` | Health check |
+
+### tRPC (`/trpc`)
+
+Existing tRPC endpoints remain available.
+
+## Environment Variables
+
+```env
+# Database
+DATABASE_URL="postgresql://..."
+
+# Clerk Authentication
+CLERK_SECRET_KEY="sk_test_..."
+CLERK_PUBLISHABLE_KEY="pk_test_..."
+
+# API Configuration
+API_PORT=3000
+CORS_ORIGIN="http://localhost:5173"
+NODE_ENV="development"
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start all apps in dev mode |
+| `bun run build` | Build all apps |
+| `bun run check-types` | TypeScript type check |
+| `bun run db:push` | Push schema to database |
+| `bun run db:studio` | Open Drizzle Studio |
+| `bun run db:generate` | Generate migrations |
+
+## Railway Deployment
+
+1. Push to GitHub
+2. Connect to Railway
+3. Add environment variables
+4. Deploy!
+
+```bash
+railway link
+railway up
+```
+
+## License
+
+MIT
